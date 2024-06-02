@@ -54,7 +54,8 @@ public class UserController
    private UserService userService;
     public UserController()
     {
-    this.userService=new UserService();
+
+        this.userService=new UserService();
     }
 
     /**
@@ -90,10 +91,11 @@ public class UserController
      * Patch vs Update
      * User data -{id:1,name:ABC,age:20} already present
      *  Either client sends the entire data to be updated {id:1,name:bc,age=20}
-     *      BE will save the incoming data blindly
+     *      BE will save the incoming data blindly (in memory, db, cache)
      *          OR
      *  The client send only the attributes that needs to be updated {name:ac}
      *      BE will try to merge the incoming and already present data and save the result
+     * Patch: Partial Update
      */
     /**
      * Inputs from FE/Client
