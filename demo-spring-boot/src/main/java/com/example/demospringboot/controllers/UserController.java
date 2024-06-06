@@ -77,6 +77,7 @@ public class UserController
         //UserService userService=new UserService();
         User user=userService.create(userCreateRequest);
         return UserCreateResponse.from(user);
+        // returns the userID
    }
    @GetMapping("/user/fetch")
    public UserResponse getUser(@RequestParam("id") Integer userId)
@@ -100,9 +101,20 @@ public class UserController
     /**
      * Inputs from FE/Client
      * 1. variables:
-     *      a. Request param
-     *      b. Path variable:
+     *      a.Request param: Easy to decipher for the person
+     *      b.Path variable:
      * JSON dataset: @requestBody
+     *
+     * /order/?espId=1&corporateId=12&orderId=100: //can be deciphered: Request param
+     * /esp/1/corporateId/12/order/100 // cannot be deciphered: Path Variable
+     *
+     */
+    /**
+     * Unsafe Methods: that change/update the state of data on the server (POST, Patch, Put, delete)
+     * Safe Methods: Get, Head, Options
+     * @param id
+     * @param userUpdateRequest
+     * @return
      */
     @PutMapping("/user/update/{userId}")
     public UserUpdateResponse updateUser(@PathVariable("userId") Integer id,@RequestBody UserUpdateRequest userUpdateRequest) {

@@ -13,7 +13,7 @@ public class UserService
         this.userRepo = new UserRepo();
     }
 
-    public User create(UserCreateRequest userCreateRequest)
+    public User create(UserCreateRequest  userCreateRequest)
     {
         //accept dto and convert the DTO into model and then pass model to repo layer
         User user= userCreateRequest.to();
@@ -46,6 +46,7 @@ public class UserService
 
     public void delete(Integer id)
     {
+
         this.userRepo.delete(id);
     }
 }
