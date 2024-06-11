@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -31,6 +33,8 @@ public class BookCreateRequest
                         .authorCountry(this.authorCountry)
                                 .authorEmail(this.authorEmail)
                                         .genre(this.genre)
+                .createdOn(new Date())
+                .updatedOn(new Date())
                                             .build();
     }
 }
