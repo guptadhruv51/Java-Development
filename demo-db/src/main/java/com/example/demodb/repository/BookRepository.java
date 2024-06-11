@@ -129,7 +129,7 @@ public class BookRepository
     public Book getById(int bookId) throws SQLException {
 
         String sql="Select * from book where id=?";
-        PreparedStatement preparedStatement=getConnection().prepareStatement(sql);
+        PreparedStatement preparedStatement=this.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1,bookId);
         ResultSet result =preparedStatement.executeQuery();
         //ExecuteQuery gives you the data
@@ -137,14 +137,15 @@ public class BookRepository
 
             // object relation mapping
             //java to sql mapping
-            String name=result.getString("name"); //column label or column index
-            String authorName=result.getString("author_name");
-            String authorEmail=result.getString("author_email");
-            String authorCountry=result.getString("author_country");
-            Genre genre= Genre.valueOf(result.getString("genre"));
-            int id=result.getInt("id");
-            java.util.Date createdOn=result.getDate("created_on");
-            java.util.Date updatedOn=result.getDate("updated_on");
+        while(result.next()) {
+            String name = result.getString("name"); //column label or column index
+            String authorName = result.getString("author_name");
+            String authorEmail = result.getString("author_email");
+            String authorCountry = result.getString("author_country");
+            Genre genre = Genre.valueOf(result.getString("genre"));
+            int id = result.getInt("id");
+            java.util.Date createdOn = result.getDate("created_on");
+            java.util.Date updatedOn = result.getDate("updated_on");
             /**
              * Column label
              * Changes in column name will be an issue.
@@ -162,7 +163,21 @@ public class BookRepository
                     .updatedOn(updatedOn)
                     .build();
 
+        }
+return null;
+    }
 
+    public boolean deletebyId(int id) throws SQLException
+    {
+        Connection connection=getConnection();
+        String sql="DELETE from book where id="+id;
 
+        Statement statement=connection.createStatement();
+        return statement.execute(sql);
+
+//        String sql="Delete from book where id=?";
+//        PreparedStatement preparedStatement=this.getConnection().prepareStatement(sql);
+//        preparedStatement.setInt(1,id);
+//        return preparedStatement.execute();
     }
 }
