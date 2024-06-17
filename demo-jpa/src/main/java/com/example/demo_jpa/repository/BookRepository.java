@@ -50,4 +50,9 @@ public interface BookRepository extends JpaRepository <Book,Integer>
     @Query(value = "Select * from my_book b where b.author_email=:authorEmail",nativeQuery = true)
     List<Book> findByAuthorNative(String authorEmail);
 
+    List<Book> findByGenre(Genre genre); // will automatically be converted to a query when we write findBy(Java Class datamember)
+    // JPA naming convention
+    // findByGenreLike
+    List<Book> findByAuthorEmail(String authorEmail);
+    List <Book> findByGenreOrAuthorEmail(Genre genre, String authorEmail);
 }
