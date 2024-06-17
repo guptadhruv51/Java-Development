@@ -2,7 +2,9 @@ package com.example.demo_jpa.repository;
 
 import com.example.demo_jpa.models.Book;
 import com.example.demo_jpa.models.Genre;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -55,4 +57,12 @@ public interface BookRepository extends JpaRepository <Book,Integer>
     // findByGenreLike
     List<Book> findByAuthorEmail(String authorEmail);
     List <Book> findByGenreOrAuthorEmail(Genre genre, String authorEmail);
+
+    @Transactional()
+    @Modifying()
+    @Query("update Book b set b.genre=?2 where b.id=?1")
+    void updateBookByGenre(int BookId,Genre genre);
+    
+    // Since data is being changed (DML) @transactional and modifying comes as well
+
 }
