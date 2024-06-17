@@ -2,6 +2,7 @@ package com.example.demo_jpa.service;
 
 import com.example.demo_jpa.dtos.BookCreateRequest;
 import com.example.demo_jpa.models.Book;
+import com.example.demo_jpa.models.Genre;
 import com.example.demo_jpa.repository.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,5 +47,15 @@ public class BookService
         //orElseGet()
         //prElseThrow()
         //this.bookRepository.getById(id);
+    }
+
+    public List<Book> getbyEmailJPQL(String authorEmail)
+    {
+        return this.bookRepository.findByAuthorJPQL(authorEmail);
+    }
+
+    public List<Book> getbyEmaiNative(String authorEmail)
+    {
+        return this.bookRepository.findByAuthorNative(authorEmail);
     }
 }

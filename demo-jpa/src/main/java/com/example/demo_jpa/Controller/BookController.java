@@ -3,6 +3,7 @@ package com.example.demo_jpa.Controller;
 
 import com.example.demo_jpa.dtos.BookCreateRequest;
 import com.example.demo_jpa.models.Book;
+import com.example.demo_jpa.models.Genre;
 import com.example.demo_jpa.service.BookService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -40,9 +41,18 @@ public class BookController
 
     }
 
+    @GetMapping("book/author/{authorEmail}/jpql")
+    public List<Book> getBooksByEmailJPQL(@PathVariable("authorEmail") String authorEmail)
+    {
 
+        return this.bookservice.getbyEmailJPQL(authorEmail);
+    }
+    @GetMapping("book/author/{authorEmail}/native")
+    public List<Book> getBooksByEmailNative(@PathVariable("authorEmail") String authorEmail)
+    {
 
-
+        return this.bookservice.getbyEmaiNative(authorEmail);
+    }
 
 
 }
