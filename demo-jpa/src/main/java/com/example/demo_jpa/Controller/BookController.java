@@ -2,10 +2,8 @@ package com.example.demo_jpa.Controller;
 
 
 import com.example.demo_jpa.dtos.BookCreateRequest;
-import com.example.demo_jpa.service.BookService;
 import com.example.demo_jpa.models.Book;
-import com.example.demodb.models.Book;
-import com.example.demodb.requests.BookCreateRequest;
+import com.example.demo_jpa.service.BookService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
