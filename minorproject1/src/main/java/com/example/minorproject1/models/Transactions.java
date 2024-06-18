@@ -26,8 +26,11 @@ public class Transactions
     @ManyToOne
     @JoinColumn
     private Book book;
-
+    @Enumerated(value = EnumType.STRING)
     private TransactionStatus transactionStatus;
+    @Enumerated(value = EnumType.STRING)
+    private TransactionType transactionType;
+    private Integer fine;
     @UpdateTimestamp
     private Date updatedOn;
     @CreationTimestamp

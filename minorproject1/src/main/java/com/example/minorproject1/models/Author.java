@@ -14,6 +14,8 @@ import java.util.Date;
 @Builder
 public class Author
 {
+    // JPA's unidirectional relationship
+    // bidirectional relationship 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

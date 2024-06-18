@@ -20,6 +20,8 @@ public class Book
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+   // @GeneratedValue(strategy = GenerationType.UUID)
+    private String externalTransactionId;
     @Enumerated(value=EnumType.STRING)
     private Genre genre;
     private String name;
