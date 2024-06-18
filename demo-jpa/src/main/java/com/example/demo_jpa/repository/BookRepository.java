@@ -62,7 +62,7 @@ public interface BookRepository extends JpaRepository <Book,Integer>
     @Modifying()
     @Query("update Book b set b.genre=?2 where b.id=?1")
     void updateBookByGenre(int BookId,Genre genre);
-    
+
     // Since data is being changed (DML) @transactional and modifying comes as well
 
 }
