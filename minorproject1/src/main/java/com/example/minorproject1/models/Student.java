@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,7 +18,7 @@ public class Student
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer Id;
     private String name;
     @Column(unique = true)
     private String email;
@@ -28,5 +29,8 @@ public class Student
     @UpdateTimestamp
     private Date updatedOn;
 
-
+    @OneToMany(mappedBy="student") //back reference (name of the data member in book class)
+    private List<Book> bookList;
+    @OneToMany(mappedBy="student")
+    private List<Transactions> transactionsList;
 }

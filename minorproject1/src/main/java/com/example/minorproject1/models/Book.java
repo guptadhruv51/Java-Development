@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,5 +39,7 @@ public class Book
     @UpdateTimestamp
     private Date updatedOn;
 
+    @OneToMany(mappedBy="book") // in transaction class data member is book
+    private List<Transactions> transactionsList;
 
 }
