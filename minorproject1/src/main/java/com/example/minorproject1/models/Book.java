@@ -1,5 +1,6 @@
 package com.example.minorproject1.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,9 +31,11 @@ public class Book
     @ManyToOne // Many books can have one author
     // many: first word represents current class
     @JoinColumn  //foreign key creation
+    @JsonIgnoreProperties({"bookList","createdOn"})
     private Author author;
     @ManyToOne
     @JoinColumn // will make sure there is a foreign key in book table with a student id
+    @JsonIgnoreProperties("bookList")
     private Student student;
     @CreationTimestamp
     private Date createdOn;

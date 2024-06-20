@@ -1,5 +1,6 @@
 package com.example.minorproject1.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,6 +26,7 @@ public class Author
     @CreationTimestamp
     private Date createdOn;
     @OneToMany(mappedBy = "author") //attribute name of book class author or the name for forward direction FK attribute
+    @JsonIgnoreProperties("author") // as soon as you see author in book break
     private List<Book> bookList; //bidirectional relationship (tightly coupled)
 
     /**

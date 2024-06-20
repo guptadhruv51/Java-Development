@@ -1,5 +1,6 @@
 package com.example.minorproject1.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,9 +23,11 @@ public class Transactions
     private Integer id;
     @ManyToOne
     @JoinColumn
+    @JsonIgnoreProperties("transactionsList")
     private Student student;
     @ManyToOne
     @JoinColumn
+    @JsonIgnoreProperties("transactionsList")
     private Book book;
     @Enumerated(value = EnumType.STRING)
     private TransactionStatus transactionStatus;

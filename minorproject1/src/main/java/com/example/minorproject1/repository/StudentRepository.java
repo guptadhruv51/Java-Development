@@ -12,6 +12,6 @@ public interface StudentRepository  extends JpaRepository<Student,Integer>
 
     @Modifying
     @Transactional
-    @Query(value = "update student s set s.status=?2 where s.id=?1")
+    @Query(value = "update Student s set s.status=?2 where s.Id=?1")
     void deactivate(int studentId, StudentStaus status);
 }
