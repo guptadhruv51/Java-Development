@@ -37,4 +37,9 @@ public class StudentControllers
     {
     return this.studentService.update(id,updateStudentRequest);
     }
+    @DeleteMapping("/{studentId}")
+    public GetStudentDetailsResponse DeactivateService(@PathVariable ("studentId") Integer id)
+    {
+        return this.studentService.deactivate(id);
+    }
 }

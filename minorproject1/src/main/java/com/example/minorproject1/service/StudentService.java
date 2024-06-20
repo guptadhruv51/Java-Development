@@ -5,6 +5,7 @@ import com.example.minorproject1.dtos.GetStudentDetailsResponse;
 import com.example.minorproject1.dtos.UpdateStudentRequest;
 import com.example.minorproject1.models.Book;
 import com.example.minorproject1.models.Student;
+import com.example.minorproject1.models.StudentStaus;
 import com.example.minorproject1.repository.StudentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import netscape.javascript.JSObject;
@@ -73,4 +74,9 @@ public class StudentService
         return mapper.convertValue(savedStudent,Student.class);
     }
 
+    public GetStudentDetailsResponse deactivate(Integer id)
+    {
+         this.studentRepository.deactivate(id, StudentStaus.Inactive);
+         return this.getStudentDetailsResponse(id,false);
+    }
 }
