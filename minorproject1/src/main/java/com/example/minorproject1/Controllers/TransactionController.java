@@ -31,4 +31,10 @@ public class TransactionController
 
             return transactionService.initiateTransaction(StudentId,bookId,transactionType);
     }
+    /**
+     * Add APIS
+     * getTransaction by id (paginated)
+     * getTransactionStudentId
+     * getTransactionBookId
+     */
 }
