@@ -9,12 +9,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TransactionService
 {
     @Value("${transactions.books.number}")
     private Integer numberofBooks;
+    @Value("${books.return.duration")
+    private Integer noOfDays;
+    @Value("${fine.per.day}")
+    private Integer finePerDay;
     @Autowired
     StudentService studentService;
     @Autowired
@@ -101,8 +106,78 @@ public class TransactionService
    }
    return transaction.getExternalId();
     }
-private String initiateReturn(Integer StudentId, Integer bookId)
-{
-    return null;
-}
+    /**
+     * Logic:
+     * ---------------------------Validations need to be done at service layer --------------------------------------
+     *  Validate a student and book, throw 400/404 if any of these details are invalid.
+     *  Validate whether the book is assigned or not and if assigned it should be to that student.
+     *  ----------------------------------------------------------------------------
+     *  Create transaction entry in the transaction table with status a Pending.
+     *  Make the book available so that anyone can issue the book concurrently /assign it to the student (book.student=?)
+     *  Update the transaction entry with the status as success
+     *  If any issue in the last two-steps update transaction entry with failed
+     */
+private String initiateReturn(Integer StudentId, Integer bookId) throws Exception {
+        //------------------------Data Retrieval-----------------------
+        Student student = this.studentService.getStudentDetailsResponse(StudentId, true).getStudent();
+
+    if(student==null)
+    {
+        throw new Exception("Student not present");
+    }
+    Book book=this.bookService.getById(bookId);
+    if(book.getStudent()==null || book.getStudent().getId()!=StudentId)
+    {
+        throw new Exception("Book cannot be returned");
+    }
+    Integer fine=this.calculatefine(book,student);
+    Transactions transaction= Transactions.builder().
+            student(student) //adding a student key for transaction
+            .externalId(UUID.randomUUID().toString())
+            .book(book)
+            .fine(fine)
+            .transactionType(TransactionType.Return)
+            .transactionStatus(TransactionStatus.Pending).build();
+
+    transaction= transactionRepository.save(transaction);
+    try
+    {
+        book.setStudent(null); // unassigned the book
+        book=this.bookService.createOrUpdate(book);
+        transaction.setTransactionStatus(TransactionStatus.Success);
+        this.transactionRepository.save(transaction);
+    }
+    catch(Exception e)
+    {
+        transaction.setTransactionStatus(TransactionStatus.Failed);
+        this.transactionRepository.save(transaction);
+        if(book.getStudent()==null)
+        {
+            book.setStudent(student); //
+            this.bookService.createOrUpdate(book);
+        }
+    }
+    return transaction.getExternalId();
+
+    }
+
+    /**
+     *
+     * Get issuance transaction
+     * Calculate time taken from the transaction updatedOn to current time
+     *
+     */
+    private Integer calculatefine(Book book, Student student)
+    {
+    Transactions txn=this.transactionRepository.
+            findTopByStudentAndBookAndTransactionTypeAndTransactionStatusOrderByIdDesc
+                    (student,book,TransactionType.Issue,TransactionStatus.Success);
+    Long issuedTimeinMillis=txn.getUpdatedOn().getTime();
+
+    Long timePassedInMillis=System.currentTimeMillis()-issuedTimeinMillis;
+        Long daysPassed=TimeUnit.DAYS.convert(timePassedInMillis,TimeUnit.MILLISECONDS);
+        if(daysPassed>this.noOfDays)
+            return Math.toIntExact((daysPassed - noOfDays) * finePerDay);
+    return 0;
+    }
 }
