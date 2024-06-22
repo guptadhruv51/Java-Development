@@ -16,7 +16,7 @@ public class TransactionService
 {
     @Value("${transactions.books.number}")
     private Integer numberofBooks;
-    @Value("${books.return.duration")
+    @Value("${books.return.duration}")
     private Integer noOfDays;
     @Value("${fine.per.day}")
     private Integer finePerDay;
