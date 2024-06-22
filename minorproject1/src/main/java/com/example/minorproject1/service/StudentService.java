@@ -28,14 +28,15 @@ public class StudentService
     public GetStudentDetailsResponse getStudentDetailsResponse(Integer id,boolean requireBookList)
     {
         Student student=studentRepository.findById(id).orElse(null);
-        List<Book> bookList=null;
-        if(requireBookList)
-        {
-            bookList=this.bookService.getBooksByStudentId(id);
-        }
+//        List<Book> bookList=null;
+//        if(requireBookList)
+//        {
+//            bookList=this.bookService.getBooksByStudentId(id);
+//        }
         //List<Book> bookList=this.bookService.getBooksByStudentId(id);
+        assert student != null;
         return GetStudentDetailsResponse.builder().student(student)
-                        .bookList(bookList)
+                        .bookList(student.getBookList())
                 .build();
     }
 

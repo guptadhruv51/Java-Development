@@ -4,6 +4,7 @@ import com.example.minorproject1.dtos.CreateBookRequest;
 import com.example.minorproject1.dtos.GetBookDetailsResponse;
 import com.example.minorproject1.models.Author;
 import com.example.minorproject1.models.Book;
+import com.example.minorproject1.models.Student;
 import com.example.minorproject1.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,8 @@ public class BookService
     BookRepository bookRepository;
     @Autowired
     AuthorService authorService;
-    @Autowired
-    GetBookDetailsResponse getBookDetailsResponse;
+    //@Autowired
+    //GetBookDetailsResponse getBookDetailsResponse;
     public List<Book> getBooksByStudentId(Integer id)
     {
             return this.bookRepository.findByStudentId(id);
@@ -45,5 +46,10 @@ public class BookService
         response.setAuthorName(book.getAuthor().getName());
         response.setGenre(book.getGenre());
         return response;
+    }
+
+    public Book createOrUpdate(Book book)
+    {
+        return this.bookRepository.save(book);
     }
 }

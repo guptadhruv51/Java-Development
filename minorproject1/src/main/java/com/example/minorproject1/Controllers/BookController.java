@@ -1,6 +1,7 @@
 package com.example.minorproject1.Controllers;
 
 import com.example.minorproject1.dtos.CreateBookRequest;
+import com.example.minorproject1.dtos.GetBookDetailsResponse;
 import com.example.minorproject1.models.Book;
 import com.example.minorproject1.service.BookService;
 import jakarta.validation.Valid;
@@ -23,6 +24,12 @@ public class BookController
     public Book getBookbyId(@PathVariable("bookId") Integer id)
     {
         return this.bookService.getById(id);
+        //response DTo
+    }
+    @GetMapping("/{bookId}/")
+    public GetBookDetailsResponse getBookbyId2(@PathVariable("bookId") Integer id)
+    {
+        return this.bookService.getbyId2(id);
         //response DTo
     }
 }

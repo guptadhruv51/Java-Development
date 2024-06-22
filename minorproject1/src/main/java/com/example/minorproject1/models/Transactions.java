@@ -21,6 +21,7 @@ public class Transactions
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String externalId;
     @ManyToOne
     @JoinColumn
     @JsonIgnoreProperties("transactionsList")
