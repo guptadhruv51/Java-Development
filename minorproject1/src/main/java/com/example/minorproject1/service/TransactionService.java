@@ -167,7 +167,7 @@ private String initiateReturn(Integer StudentId, Integer bookId) throws Exceptio
      * Calculate time taken from the transaction updatedOn to current time
      *
      */
-    private Integer calculatefine(Book book, Student student)
+    public Integer calculatefine(Book book, Student student)
     {
     Transactions txn=this.transactionRepository.
             findTopByStudentAndBookAndTransactionTypeAndTransactionStatusOrderByIdDesc
