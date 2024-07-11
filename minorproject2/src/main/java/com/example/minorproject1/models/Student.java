@@ -38,4 +38,9 @@ public class Student
     private List<Transactions> transactionsList;
     @Enumerated(value=EnumType.STRING)
     private StudentStaus status;
+
+    @JoinColumn
+    @OneToOne
+    @JsonIgnoreProperties("student")
+    private User user;
 }
