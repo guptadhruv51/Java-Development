@@ -15,7 +15,7 @@ public class StudentControllers
 {
     @Autowired
     StudentService studentService;
-    @PostMapping()
+    @PostMapping() // similar to /user/signup
     public Integer createStudent(@Valid @RequestBody CreateStudentRequest createStudentRequest)
     {
             return studentService.create(createStudentRequest);

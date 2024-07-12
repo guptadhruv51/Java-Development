@@ -3,19 +3,17 @@ package com.example.minorproject1.service;
 import com.example.minorproject1.dtos.CreateStudentRequest;
 import com.example.minorproject1.dtos.GetStudentDetailsResponse;
 import com.example.minorproject1.dtos.UpdateStudentRequest;
-import com.example.minorproject1.models.Book;
+import com.example.minorproject1.models.Authority;
 import com.example.minorproject1.models.Student;
 import com.example.minorproject1.models.StudentStaus;
+import com.example.minorproject1.models.User;
 import com.example.minorproject1.repository.StudentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import netscape.javascript.JSObject;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
-import java.util.List;
 
 @Service
 public class StudentService
@@ -25,6 +23,8 @@ public class StudentService
     StudentRepository studentRepository;
     @Autowired
     BookService bookService;
+    @Autowired
+    UserService userService;
     public GetStudentDetailsResponse getStudentDetailsResponse(Integer id,boolean requireBookList)
     {
         Student student=studentRepository.findById(id).orElse(null);
@@ -43,10 +43,20 @@ public class StudentService
 
     public Integer create(CreateStudentRequest createStudentRequest)
     {
-        Student student =createStudentRequest.to();
-        student=this.studentRepository.save(student); //taking the id from the saved object in database
-        //in Spring 3.0, JPA automatically returns the id from the database
+        /**
+         * 1. To create a user (encode the password, attach the authorities)
+         * 2. Create user
+         * 3. Attach the userid with the student (foreign key reference)
+         */
+        Student student=createStudentRequest.to();
+        User user=this.userService.createUser(student.getUser(), Authority.student);
+        student.setUser(user);
+        this.studentRepository.save(student);
         return student.getId();
+//        Student student =createStudentRequest.to();
+//        student=this.studentRepository.save(student); //taking the id from the saved object in database
+//        //in Spring 3.0, JPA automatically returns the id from the database
+//        return student.getId();
     }
     public GetStudentDetailsResponse update(Integer id, UpdateStudentRequest request)
     {

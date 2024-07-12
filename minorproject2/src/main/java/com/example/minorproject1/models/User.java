@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,7 +19,6 @@ import java.util.List;
 @Builder
 public class User implements UserDetails {
     @Id
-    @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)
     private String password;
