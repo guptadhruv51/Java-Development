@@ -20,16 +20,16 @@ public class BookController
     {
         return bookService.create(createBookRequest);
     }
-    @GetMapping("/{bookId}")
-    public Book getBookbyId(@PathVariable("bookId") Integer id)
-    {
-        return this.bookService.getById(id);
-        //response DTo
-    }
+//    @GetMapping("/{bookId}")
+//    public Book getBookbyId(@PathVariable("bookId") Integer id)
+//    {
+//        return this.bookService.getById(id);
+//        //response DTo
+//    }
     @GetMapping("/{bookId}/")
-    public GetBookDetailsResponse getBookbyId2(@PathVariable("bookId") Integer id)
+    public GetBookDetailsResponse getBookbyId(@PathVariable("bookId") Integer id)
     {
         return this.bookService.getbyId2(id);
-        //response DTo
+        //response DTO
     }
 }

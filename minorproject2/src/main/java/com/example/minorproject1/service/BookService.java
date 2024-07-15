@@ -5,6 +5,7 @@ import com.example.minorproject1.dtos.GetBookDetailsResponse;
 import com.example.minorproject1.models.Author;
 import com.example.minorproject1.models.Book;
 import com.example.minorproject1.models.Student;
+import com.example.minorproject1.models.Transactions;
 import com.example.minorproject1.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,15 +42,26 @@ public class BookService
     public GetBookDetailsResponse getbyId2(Integer id)
     {
         Book book=this.bookRepository.findById(id).orElse(null);
-        GetBookDetailsResponse response=new GetBookDetailsResponse();
-        response.setName(book.getName());
-        response.setAuthorName(book.getAuthor().getName());
-        response.setGenre(book.getGenre());
-        return response;
+
+//        response.setName(book.getName());
+//        response.setAuthorName(book.getAuthor().getName());
+//        response.setGenre(book.getGenre());
+      return GetBookDetailsResponse.builder().
+                name(book.getName()).AuthorName(book.getAuthor().getName()).genre(book.getGenre()).build();
+
     }
 
     public Book createOrUpdate(Book book)
     {
         return this.bookRepository.save(book);
+    }
+
+    public List<Transactions> getTransactions(Integer id) throws Exception {
+       Book book=this.bookRepository.findById(id).orElse(null);
+       if(book==null)
+       {
+           throw new Exception("Invalid Book ID");
+       }
+       return book.getTransactionsList();
     }
 }

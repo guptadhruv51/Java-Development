@@ -27,6 +27,10 @@ public class TransactionService
     @Autowired
     TransactionRepository transactionRepository;
 
+    public List<Transactions> getTransactionList(Integer bookID) throws Exception
+    {
+        return this.bookService.getTransactions(bookID);
+    }
     public String initiateTransaction(Integer studentId, Integer bookId,
                                       TransactionType transactionType) throws Exception {
         switch(transactionType)

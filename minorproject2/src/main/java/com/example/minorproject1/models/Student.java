@@ -1,5 +1,6 @@
 package com.example.minorproject1.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,6 +42,7 @@ public class Student
 
     @JoinColumn
     @OneToOne
-    @JsonIgnoreProperties("student")
+    @JsonIgnoreProperties("student") // removes a particular property from the response
+    @JsonIgnore // remove the user object from the response
     private User user;
 }

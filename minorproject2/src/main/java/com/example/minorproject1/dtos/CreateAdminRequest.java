@@ -31,8 +31,7 @@ public class CreateAdminRequest
                         User.builder()
                                 .username(this.username)
                                 .password(this.password)
-                                .build()
-                )
+                                .build())
                 .build();
     }
 

@@ -1,9 +1,11 @@
 package com.example.minorproject1.config;
 
+import com.example.minorproject1.models.Author;
 import com.example.minorproject1.models.Authority;
 import com.example.minorproject1.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -31,8 +33,15 @@ public class SecurityConfig
         httpSecurity.csrf(csrf->csrf.disable())
         .authorizeHttpRequests(
 
-                (authz)->authz.requestMatchers("/admin/**").hasAuthority(Authority.admin.name())
-                        .requestMatchers("/students/**").permitAll()
+                (authz)->authz.
+                        requestMatchers("/students/admin/**").hasAuthority(Authority.admin.name())
+                        .requestMatchers("/students/**").hasAuthority(Authority.admin.name())
+                        .requestMatchers("/admin/**").hasAuthority(Authority.admin.name())
+                        .requestMatchers(HttpMethod.GET,"/books/**").hasAnyAuthority(Authority.admin.name(), Authority.student.name())
+                        .requestMatchers("/books/**").hasAuthority(Authority.admin.name())
+                        .requestMatchers("transaction/admin/**").hasAuthority(Authority.admin.name())
+                        .requestMatchers("/transaction/**").hasAuthority(Authority.student.name())
+                        .requestMatchers("/**").permitAll()
 
         ).httpBasic(Customizer.withDefaults());
         return httpSecurity.build();
