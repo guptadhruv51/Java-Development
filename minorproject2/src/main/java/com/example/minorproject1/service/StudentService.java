@@ -7,6 +7,7 @@ import com.example.minorproject1.models.Authority;
 import com.example.minorproject1.models.Student;
 import com.example.minorproject1.models.StudentStaus;
 import com.example.minorproject1.models.User;
+import com.example.minorproject1.repository.StudentCacheRepository;
 import com.example.minorproject1.repository.StudentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
@@ -18,23 +19,40 @@ import java.util.Iterator;
 @Service
 public class StudentService
 {
+
     private ObjectMapper mapper = new ObjectMapper();
     @Autowired
     StudentRepository studentRepository;
+    @Autowired
+    StudentCacheRepository studentCacheRepository;
     @Autowired
     BookService bookService;
     @Autowired
     UserService userService;
     public GetStudentDetailsResponse getStudentDetailsResponse(Integer id,boolean requireBookList)
     {
-        Student student=studentRepository.findById(id).orElse(null);
+
+        //Cache Logic
+        Student student=this.studentCacheRepository.getfromCache(id);
+        if(student!=null)
+        {
+            return GetStudentDetailsResponse.builder().student(student)
+                    .bookList(student.getBookList())
+                    .build();
+        }
+
+        student=studentRepository.findById(id).orElse(null);
 //        List<Book> bookList=null;
 //        if(requireBookList)
 //        {
 //            bookList=this.bookService.getBooksByStudentId(id);
 //        }
         //List<Book> bookList=this.bookService.getBooksByStudentId(id);
-        assert student != null;
+//        assert student != null;
+
+        // Cache Miss
+
+        this.studentCacheRepository.add(student);
         return GetStudentDetailsResponse.builder().student(student)
                         .bookList(student.getBookList())
                 .build();

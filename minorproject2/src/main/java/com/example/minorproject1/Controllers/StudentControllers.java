@@ -40,6 +40,14 @@ public class StudentControllers
      * @throws Exception
      */
 
+    /**
+     * Caching
+     * Fetch the student details in the cache for the given student id.
+     * If the details exist, then return from here itself.
+     * If the student details don't exist, then fetch the details from db.
+     * Save the data in cache for future reference
+     * return data retrieved from cache to the user
+     */
     @GetMapping("/admin/{studentId}") // needs to have an authority of admin
     public GetStudentDetailsResponse getStudentDetailsForAdmin(
             @PathVariable("studentId") Integer studentId,

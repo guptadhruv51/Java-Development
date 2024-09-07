@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.io.Serializable;
 import java.security.Identity;
 import java.util.Date;
 @Getter
@@ -13,7 +14,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Admin
+public class Admin implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

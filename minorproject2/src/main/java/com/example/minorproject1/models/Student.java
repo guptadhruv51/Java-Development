@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Student
+public class Student implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +32,10 @@ public class Student
     @UpdateTimestamp
     private Date updatedOn;
 
-    @OneToMany(mappedBy="student") //back reference (name of the data member in book class)
+    @OneToMany(mappedBy="student",fetch = FetchType.EAGER) //back reference (name of the data member in book class)
     @JsonIgnoreProperties("student")
     private List<Book> bookList;
-    @OneToMany(mappedBy="student")
+    @OneToMany(mappedBy="student",fetch = FetchType.EAGER)
     @JsonIgnoreProperties("student")
     private List<Transactions> transactionsList;
     @Enumerated(value=EnumType.STRING)
