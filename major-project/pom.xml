@@ -23,6 +23,8 @@
 	</developers>
 	<modules>
 		<module>user-svc</module>
+		<module>transaction-svc</module>
+		<module>wallet-svc</module>
 	</modules>
 	<scm>
 		<connection/>
