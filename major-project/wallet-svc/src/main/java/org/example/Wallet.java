@@ -2,6 +2,10 @@ package org.example;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.util.Date;
 
 @Entity
 @Getter
@@ -15,9 +19,17 @@ public class Wallet
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+
     private Integer userId;
 
-    private Double balance;
+    private Long balance;
+    @CreationTimestamp
+    private Date createdOn;
+    @UpdateTimestamp
+    private Date updatedOn;
+    @Enumerated(value=EnumType.STRING)
+    private WalletStatus status;
+
 
 
 }

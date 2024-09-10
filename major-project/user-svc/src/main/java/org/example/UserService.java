@@ -2,6 +2,7 @@ package org.example;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class UserService
         this.userRepository.save(user);
         // todo: publish a message for Kafka Queue to create a wallet for the new user
 
-
-        this.kafkaTemplate.send("User-Created",objectMapper.writeValueAsString(user));
+        JSONObject obj=this.objectMapper.convertValue(user,JSONObject.class);
+        this.kafkaTemplate.send("User-Create",objectMapper.writeValueAsString(obj));
     }
 }
