@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -45,6 +46,39 @@ public class WalletService
                 .status(WalletStatus.Active)
                 .build();
         this.walletRepository.save(wallet);
+        //JSONObject obj=this.objectMapper.convertValue(msg, JSONObject.class);
+
+    }
+
+    @KafkaListener(topics={"Transaction-Created"},groupId = "E-Wallet")
+    public void updateWallet(String msg) throws ParseException
+    {
+        JSONObject obj=(JSONObject) this.jsonParser.parse(msg);
+        Integer sender=(Integer)(obj.get("senderId"));
+        Integer receiver=(Integer) (obj.get("receiverId"));
+        Long amount= (Long) obj.get("amount");
+        Wallet  receiverWallet=this.walletRepository.findByuserId(receiver);
+        Wallet senderWallet=this.walletRepository.findByuserId(sender);
+
+       if(receiverWallet==null || senderWallet==null || amount<=0 || senderWallet.getBalance()<amount)
+       {
+           this.logger.error("Wallet update cannot be done");
+           // TODO: publish a message on wallet-update topic with status as failed
+            return;
+       }
+
+//        this.walletRepository.incrementWallet(receiverWallet.getId(), amount);
+//        this.walletRepository.DecrementWallet(senderWallet.getId(), amount);
+
+//        this.walletRepository.updatetWallet(receiverWallet.getId(), amount);
+//        this.walletRepository.updatetWallet(senderWallet.getId(),-amount);
+
+//
+       receiverWallet.setBalance(receiverWallet.getBalance()+amount);
+       senderWallet.setBalance(senderWallet.getBalance()-amount);
+       walletRepository.saveAll(List.of(receiverWallet,senderWallet));
+       //TODO: publish a message for transaction success/ wallet update
+
         //JSONObject obj=this.objectMapper.convertValue(msg, JSONObject.class);
 
     }

@@ -28,4 +28,6 @@ public class UserService
         JSONObject obj=this.objectMapper.convertValue(user,JSONObject.class);
         this.kafkaTemplate.send("User-Create",objectMapper.writeValueAsString(obj));
     }
+
+
 }
