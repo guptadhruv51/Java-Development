@@ -8,4 +8,6 @@ public interface TransactionRepository extends JpaRepository<Transaction,Integer
 {
 
 
+            Transaction findByExternalTxnId(String id);
+
 }
