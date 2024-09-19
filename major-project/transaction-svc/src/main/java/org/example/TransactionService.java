@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -12,7 +13,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
-import java.util.logging.Logger;
+
 
 @Service
 public class TransactionService
@@ -48,7 +49,7 @@ public class TransactionService
             Transaction transaction=this.transactionRepository.findByExternalTxnId(externalTxnId);
             if(!transaction.getTransactionStatus().equals(TransactionStatus.Pending))
             {
-                this.logger.warning("Transaction already reached terminal "+ externalTxnId);
+                this.logger.warn("Transaction already reached terminal "+ externalTxnId);
                 return;
             }
         if (status.equals("Success")) {

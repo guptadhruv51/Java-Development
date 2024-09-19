@@ -59,7 +59,8 @@ public class WalletService
     }
 
     @KafkaListener(topics={"Transaction-Created"},groupId = "E-Wallet")
-    public void updateWallet(String msg) throws ParseException, JsonProcessingException {
+    public void updateWallet(String msg) throws ParseException, JsonProcessingException
+    {
         JSONObject obj=(JSONObject) this.jsonParser.parse(msg);
         Integer sender=(Integer)(obj.get("senderId"));
         Integer receiver=(Integer) (obj.get("receiverId"));
