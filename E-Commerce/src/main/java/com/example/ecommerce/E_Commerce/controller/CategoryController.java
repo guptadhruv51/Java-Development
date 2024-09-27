@@ -4,6 +4,7 @@ package com.example.ecommerce.E_Commerce.controller;
 import com.example.ecommerce.E_Commerce.Models.Category;
 import com.example.ecommerce.E_Commerce.Service.CategoryService;
 import com.example.ecommerce.E_Commerce.Service.CategoryServiceImpl;
+import com.example.ecommerce.E_Commerce.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
