@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Getter
@@ -18,7 +19,9 @@ public class Category
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
-    @NotBlank
+    @NotBlank(message = "must not be blank")
+    @Size(min=5,message = "Category name must contain at least five characters")
+    //message-> tells the message that will be shown
     private String categoryName;
 
 }
