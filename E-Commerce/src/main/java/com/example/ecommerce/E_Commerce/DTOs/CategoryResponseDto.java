@@ -15,5 +15,10 @@ public class CategoryResponseDto
 {
     private List<CategoryDTO> content;
 
+    private Integer pageNumber;
+    private Integer pageSize;
+    private Long totalElements;
+    private Integer totalPages;
+    private Boolean lastPage;
 
 }

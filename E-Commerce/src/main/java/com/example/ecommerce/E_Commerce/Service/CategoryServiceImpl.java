@@ -9,6 +9,10 @@ import com.example.ecommerce.E_Commerce.exceptions.ResourceNotFoundException;
 import com.example.ecommerce.E_Commerce.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,9 +32,14 @@ public class CategoryServiceImpl implements CategoryService
     private ModelMapper modelMapper;
 
     @Override
-    public CategoryResponseDto getAllCategories()
+    public CategoryResponseDto getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder)
     {
-        List<Category> categoryList=categoryRepository.findAll();
+        Sort sortByAndOrder=sortOrder.equalsIgnoreCase("asc")?
+                Sort.by(sortBy).ascending():
+                Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sortByAndOrder);
+        Page<Category> categoryPage=categoryRepository.findAll(pageable);
+        List<Category> categoryList=categoryPage.getContent();
         if(categoryList.isEmpty())
         {
                 throw new ApiException("No Categories have been created yet");
@@ -40,6 +49,12 @@ public class CategoryServiceImpl implements CategoryService
                 .map(category -> modelMapper.map(category, CategoryDTO.class)).toList();
         CategoryResponseDto categoryResponseDto=new CategoryResponseDto();
         categoryResponseDto.setContent(categoryDTOS);
+        categoryResponseDto.setPageNumber(categoryPage.getNumber());
+        categoryResponseDto.setPageSize(categoryPage.getSize());
+        categoryResponseDto.setTotalPages(categoryPage.getTotalPages());
+        categoryResponseDto.setTotalElements(categoryPage.getTotalElements());
+        categoryResponseDto.setLastPage(categoryPage.isLast());
+
         return categoryResponseDto;
     }
 
