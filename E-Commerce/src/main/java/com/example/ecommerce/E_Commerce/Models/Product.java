@@ -18,6 +18,7 @@ public class Product
     Long productId;
     @NotNull
     private String productName;
+    private String image;
     @NotBlank
     private String description;
     @NotBlank
@@ -25,6 +26,7 @@ public class Product
     @NotBlank
     private double price;
     private double specialPrice;
+    private double discount;
     @ManyToOne
     @JoinColumn(name="categoryId")
     private Category category;
