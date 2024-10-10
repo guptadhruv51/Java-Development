@@ -123,7 +123,7 @@ public class ProductServiceImpl implements ProductService
         String randomId= UUID.randomUUID().toString();
         //Adding extension from the original fileName
         String fileName=randomId.concat(originalFileName.substring(originalFileName.lastIndexOf('.')));
-        String filePath=path+ File.pathSeparator+fileName;
+        String filePath=path+ File.separator+fileName;
 
         //Upload to server
         // rename the file
