@@ -4,19 +4,12 @@ package com.example.ecommerce.E_Commerce.controller;
 import com.example.ecommerce.E_Commerce.Config.AppConstants;
 import com.example.ecommerce.E_Commerce.DTOs.CategoryDTO;
 import com.example.ecommerce.E_Commerce.DTOs.CategoryResponseDto;
-import com.example.ecommerce.E_Commerce.Models.Category;
-import com.example.ecommerce.E_Commerce.Service.CategoryService;
 import com.example.ecommerce.E_Commerce.Service.CategoryServiceImpl;
-import com.example.ecommerce.E_Commerce.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -29,7 +22,7 @@ public class CategoryController
     public ResponseEntity<CategoryResponseDto> getAllCategories(
             @RequestParam(name="pageNumber",required = false,defaultValue = AppConstants.PAGE_Number) Integer pageNumber,
             @RequestParam(name="pageSize",required = false,defaultValue = AppConstants.PAGE_Size) Integer pageSize,
-            @RequestParam(name="sortBy",required = false,defaultValue = AppConstants.sortBy) String sortBy,
+            @RequestParam(name="sortBy",required = false,defaultValue = AppConstants.Sort_Categories_By) String sortBy,
             @RequestParam(name="=sortOrder",required = false,defaultValue = AppConstants.sortOrder) String sortOrder)
     {
         CategoryResponseDto categoryResponseDto=categoryService.getAllCategories(pageNumber,pageSize,sortBy,sortOrder);
