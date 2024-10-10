@@ -5,11 +5,13 @@ import com.example.ecommerce.E_Commerce.DTOs.ProductDTO;
 import com.example.ecommerce.E_Commerce.DTOs.ProductResponseDto;
 import com.example.ecommerce.E_Commerce.Models.Category;
 import com.example.ecommerce.E_Commerce.Models.Product;
+import com.example.ecommerce.E_Commerce.exceptions.ApiException;
 import com.example.ecommerce.E_Commerce.exceptions.ResourceNotFoundException;
 import com.example.ecommerce.E_Commerce.repository.CategoryRepository;
 import com.example.ecommerce.E_Commerce.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -33,25 +35,45 @@ public class ProductServiceImpl implements ProductService
     private CategoryRepository categoryRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private FileServiceImpl fileService;
+    @Value("${project.image}")
+    private String path;
     @Override
-    public ProductDTO addProduct(Long categoryId, ProductDTO productDTO)
-    {
-        Category category=categoryRepository.findById(categoryId)
-                .orElseThrow(()->new ResourceNotFoundException("Category","categoryId",categoryId));
-
-        Product product=modelMapper.map(productDTO,Product.class);
-        product.setImage("Not available");
-        product.setCategory(category);
-        double specialPrice=product.getPrice()-(product.getDiscount()*0.01)*product.getPrice();
-        product.setSpecialPrice(specialPrice);
-        Product saved=productRepository.save(product);
-        return modelMapper.map(product,ProductDTO.class);
+    public ProductDTO addProduct(Long categoryId, ProductDTO productDTO) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+        boolean isProductNotPresent = true;
+        List<Product> products = category.getProductList();
+        for (Product value : products) {
+            if (value.getProductName().equals(productDTO.getProductName())) {
+                isProductNotPresent = false;
+                break;
+            }
+        }
+        if (isProductNotPresent) {
+            Product product = modelMapper.map(productDTO, Product.class);
+            product.setImage("Not available");
+            product.setCategory(category);
+            double specialPrice = product.getPrice() - (product.getDiscount() * 0.01) * product.getPrice();
+            product.setSpecialPrice(specialPrice);
+            Product saved = productRepository.save(product);
+            return modelMapper.map(product, ProductDTO.class);
+        }
+        else
+        {
+            throw new ApiException("Product already exists!!!!");
+        }
     }
 
     @Override
     public ProductResponseDto getAllProducts()
-    {
+    {   // check if product size =0
         List<Product> productList=productRepository.findAll();
+        if(productList.isEmpty())
+        {
+            throw new ApiException("Product List is Empty");
+        }
         List<ProductDTO> productDTOS=productList.stream()
                 .map(product -> modelMapper.map(product,ProductDTO.class))
                 .toList();
@@ -111,29 +133,12 @@ public class ProductServiceImpl implements ProductService
     public ProductDTO updateProductImage(Long productId, MultipartFile image) throws IOException {
         Product product=productRepository.findById(productId)
                 .orElseThrow(()->new ResourceNotFoundException("Product","productId",productId));
-        String path="images/";
-        String fileName=uploadImage(path,image);
+
+        String fileName=fileService.uploadImage(path,image);
         product.setImage(fileName);
         product=productRepository.save(product);
 
         return modelMapper.map(product,ProductDTO.class);
     }
-    private String uploadImage(String path, MultipartFile file) throws IOException {
-        String originalFileName=file.getOriginalFilename();
-        String randomId= UUID.randomUUID().toString();
-        //Adding extension from the original fileName
-        String fileName=randomId.concat(originalFileName.substring(originalFileName.lastIndexOf('.')));
-        String filePath=path+ File.separator+fileName;
 
-        //Upload to server
-        // rename the file
-        // Generate a random file name (UUID)
-        File folder =new File(path);
-        if(!folder.exists())
-            folder.mkdir();
-        Files.copy(file.getInputStream(), Paths.get(filePath));
-
-        return fileName;
-        //return filename
-    }
 }

@@ -3,8 +3,10 @@ package com.example.ecommerce.E_Commerce.controller;
 import com.example.ecommerce.E_Commerce.DTOs.ProductDTO;
 import com.example.ecommerce.E_Commerce.DTOs.ProductResponseDto;
 import com.example.ecommerce.E_Commerce.Service.ProductServiceImpl;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +21,7 @@ public class ProductController {
     ProductServiceImpl productService;
 
     @PostMapping("/admin/categories/{categoryId}/product")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO,
+    public ResponseEntity<ProductDTO> addProduct(@Valid @RequestBody ProductDTO productDTO,
                                                  @PathVariable Long categoryId) {
         ProductDTO savedproductDTO = productService.addProduct(categoryId, productDTO);
         return new ResponseEntity<>(savedproductDTO, HttpStatus.CREATED);
@@ -32,7 +34,7 @@ public class ProductController {
     }
 
     @GetMapping("/public/categories/{categoryId}/products")
-    public ResponseEntity<ProductResponseDto> getProductsByCategory(@PathVariable Long categoryId) {
+    public ResponseEntity<ProductResponseDto> getProductsByCategory(@Valid @PathVariable Long categoryId) {
         ProductResponseDto productResponseDto = productService.searchByCategory(categoryId);
         return new ResponseEntity<>(productResponseDto, HttpStatus.OK);
     }
@@ -45,7 +47,7 @@ public class ProductController {
     }
 
     @PutMapping("/admin/products/{productId}")
-    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDTO, @PathVariable Long productId)
+    public ResponseEntity<ProductDTO> updateProduct(@Valid @RequestBody ProductDTO productDTO, @PathVariable Long productId)
     {
         ProductDTO savedproductDTO=productService.updateProduct(productId,productDTO);
         return new ResponseEntity<>(savedproductDTO,HttpStatus.OK);
