@@ -1,7 +1,8 @@
-package com.ecommerce.project.util;
+package com.example.ecommerce.E_Commerce.util;
 
-import com.ecommerce.project.model.User;
-import com.ecommerce.project.repositories.UserRepository;
+import com.example.ecommerce.E_Commerce.Models.User;
+import com.example.ecommerce.E_Commerce.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

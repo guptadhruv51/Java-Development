@@ -1,10 +1,7 @@
 package com.ecommerce.project.security;
 
-import com.ecommerce.project.model.AppRole;
-import com.ecommerce.project.model.Role;
-import com.ecommerce.project.model.User;
-import com.ecommerce.project.repositories.RoleRepository;
-import com.ecommerce.project.repositories.UserRepository;
+import com.example.ecommerce.E_Commerce.Models.*;
+import com.example.ecommerce.E_Commerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

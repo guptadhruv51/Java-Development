@@ -66,4 +66,5 @@ public class User
     inverseJoinColumns = @JoinColumn(name="address_id"))
     private List<Address> addressList=new ArrayList<>();
 
+
 }
