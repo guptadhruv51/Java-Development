@@ -4,11 +4,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class WelcomeController
+public class BalanceController
 {
-    @GetMapping("/welcome")
-    public String sayWelcome()
+    @GetMapping("/myBalance")
+    public String getBalance()
     {
-        return "Welcome to Spring Application with Security";
+        return "The balance from the DB is";
     }
 }
