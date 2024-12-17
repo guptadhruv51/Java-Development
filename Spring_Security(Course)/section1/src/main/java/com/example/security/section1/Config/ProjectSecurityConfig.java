@@ -22,12 +22,12 @@ public class ProjectSecurityConfig
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 //        http.authorizeHttpRequests(
 //                (requests) -> requests.anyRequest().permitAll());
-
+        http.csrf(csrfConfig->csrfConfig.disable());
         http.authorizeHttpRequests(
                 (requests) -> requests.requestMatchers("/myAccount",
                         "/myBalance",
                         "/myCards","/myLoans").authenticated()
-                        .requestMatchers("/contact","/notices","/error").permitAll());
+                        .requestMatchers("/contact","/notices","/error","/register").permitAll());
 //        http.formLogin(flc->
 //                flc.disable());
         http.formLogin(withDefaults());
