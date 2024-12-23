@@ -2,6 +2,7 @@ package com.example.security.section1.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,12 +17,16 @@ import javax.sql.DataSource;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
+@Profile("!prod")
 public class ProjectSecurityConfig
 {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 //        http.authorizeHttpRequests(
 //                (requests) -> requests.anyRequest().permitAll());
+        http.requiresChannel(
+                rcc->rcc.anyRequest().requiresInsecure()  // Only HTTP
+        );
         http.csrf(csrfConfig->csrfConfig.disable());
         http.authorizeHttpRequests(
                 (requests) -> requests.requestMatchers("/myAccount",
