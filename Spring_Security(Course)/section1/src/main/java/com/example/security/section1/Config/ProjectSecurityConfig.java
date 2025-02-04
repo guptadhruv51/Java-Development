@@ -1,5 +1,6 @@
 package com.example.security.section1.Config;
 
+import com.example.security.section1.Exception.CustomBasicAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -24,6 +25,10 @@ public class ProjectSecurityConfig
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 //        http.authorizeHttpRequests(
 //                (requests) -> requests.anyRequest().permitAll());
+        http.sessionManagement(
+                smc->smc.sessionFixation(sfc->sfc.changeSessionId())
+                        .invalidSessionUrl("/invalidSession").maximumSessions(1).maxSessionsPreventsLogin(true)
+        );
         http.requiresChannel(
                 rcc->rcc.anyRequest().requiresInsecure()  // Only HTTP
         );
@@ -32,11 +37,15 @@ public class ProjectSecurityConfig
                 (requests) -> requests.requestMatchers("/myAccount",
                         "/myBalance",
                         "/myCards","/myLoans").authenticated()
-                        .requestMatchers("/contact","/notices","/error","/register").permitAll());
+                        .requestMatchers("/contact","/notices","/error","/register","/invalidSession").permitAll());
 //        http.formLogin(flc->
 //                flc.disable());
+        //http.formLogin(flc->flc.loginPage("/login").defaultSuccessUrl("/dashboard").failureUrl("login?error=true"))
+        //http.logout(loc->loc.logoutSuccessUrl("").invalidateHttpSession(true).clearAuthentication(true).deleteCookies("JSESSIONID"))
+
         http.formLogin(withDefaults());
-        http.httpBasic(withDefaults());
+//        http.httpBasic(withDefaults());
+        http.httpBasic(hbc->hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
         return http.build();
     }
 
