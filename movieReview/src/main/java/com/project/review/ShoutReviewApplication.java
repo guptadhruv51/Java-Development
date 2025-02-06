@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ShoutReviewApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(ShoutReviewApplication.class, args);
 	}
 
