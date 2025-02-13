@@ -1,6 +1,7 @@
 package com.project.review.controller;
 
 import com.project.review.DTO.MovieRequest;
+import com.project.review.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.http.HttpEntity;
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController
 {
     @Autowired
-    MovieRequest movieRequest;
+    MovieService movieService;
     @PostMapping("addMovie")
     public ResponseEntity<String> createMovie(@RequestBody MovieRequest movieRequest)
     {
-        movieRequest.addMovie(movieRequest);
+        movieService.addMovie(movieRequest);
         return new ResponseEntity<>("Movie added", HttpStatus.CREATED );
 
     }
