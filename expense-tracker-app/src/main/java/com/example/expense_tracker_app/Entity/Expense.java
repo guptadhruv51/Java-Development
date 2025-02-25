@@ -13,8 +13,6 @@ import java.time.LocalDate;
 
 @Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "expenses")
 public class Expense
