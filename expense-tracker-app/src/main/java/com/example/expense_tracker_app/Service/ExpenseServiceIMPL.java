@@ -3,6 +3,7 @@ package com.example.expense_tracker_app.Service;
 import com.example.expense_tracker_app.DTO.ExpenseDTO;
 import com.example.expense_tracker_app.Entity.Category;
 import com.example.expense_tracker_app.Entity.Expense;
+import com.example.expense_tracker_app.Exceptions.ResourceNotFoundException;
 import com.example.expense_tracker_app.Mapper.ExpenseMapper;
 import com.example.expense_tracker_app.Repository.CategoryRepo;
 import com.example.expense_tracker_app.Repository.ExpenseRepo;
@@ -32,7 +33,7 @@ public class ExpenseServiceIMPL implements ExpenseService
 
     @Override
     public ExpenseDTO getExpenseByID(Long expenseID) {
-        Expense expense=expenseRepo.findById(expenseID).orElseThrow(()->new RuntimeException("No expenses found for given id"));
+        Expense expense=expenseRepo.findById(expenseID).orElseThrow(()->new ResourceNotFoundException("No expenses found for given id"));
         return ExpenseMapper.mapToexpenseDTO(expense);
     }
 
@@ -46,14 +47,14 @@ public class ExpenseServiceIMPL implements ExpenseService
     public ExpenseDTO updateExpense(Long expenseID, ExpenseDTO expenseDTO) {
 
         Expense expense=expenseRepo.findById(expenseID)
-                .orElseThrow(()->new RuntimeException("Id not found "+expenseID));
+                .orElseThrow(()->new ResourceNotFoundException("Id not found "+expenseID));
 
         expense.setAmount(expenseDTO.amount());
         expense.setLocalDate(expenseDTO.localDate());
         if(expenseDTO.categoryDTO()!=null)
         {
             Category category=categoryRepo.findById(expenseDTO.categoryDTO().id())
-                    .orElseThrow(()->new RuntimeException("Category not found "));
+                    .orElseThrow(()->new ResourceNotFoundException("Category not found "));
             expense.setCategory(category);
         }
         Expense savedExpense=expenseRepo.save(expense);
@@ -63,7 +64,7 @@ public class ExpenseServiceIMPL implements ExpenseService
     @Override
     public void deleteExpense(Long expenseID) {
         Expense expense=expenseRepo.findById(expenseID)
-                .orElseThrow(()-> new RuntimeException("Expense not found "+expenseID));
+                .orElseThrow(()-> new ResourceNotFoundException("Expense not found with id: "+expenseID));
         expenseRepo.delete(expense);
     }
 }

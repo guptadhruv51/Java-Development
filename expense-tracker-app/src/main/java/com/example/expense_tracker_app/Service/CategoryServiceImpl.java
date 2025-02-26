@@ -2,6 +2,7 @@ package com.example.expense_tracker_app.Service;
 
 import com.example.expense_tracker_app.DTO.CategoryDTO;
 import com.example.expense_tracker_app.Entity.Category;
+import com.example.expense_tracker_app.Exceptions.ResourceNotFoundException;
 import com.example.expense_tracker_app.Mapper.CategoryMapper;
 import com.example.expense_tracker_app.Repository.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class CategoryServiceImpl implements  CategoryService
 
     @Override
     public CategoryDTO getCategoryByID(Long id) {
-        Category category= categoryRepo.findById(id).orElseThrow(()->new RuntimeException("Category not found for id " + id));
+        Category category= categoryRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Category not found for id " + id));
 
         return  CategoryMapper.mapToCategoryDto(category);
     }
@@ -38,7 +39,7 @@ public class CategoryServiceImpl implements  CategoryService
     @Override
     public CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO)
     {
-        Category category=categoryRepo.findById(categoryId).orElseThrow(()->new RuntimeException("category not found"));
+        Category category=categoryRepo.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("category not found"));
 
         category.setName(categoryDTO.name());
         Category savedCategory= categoryRepo.save(category);
@@ -48,7 +49,7 @@ public class CategoryServiceImpl implements  CategoryService
     @Override
     public void deleteCategory(Long categoryId) {
 
-        Category category=categoryRepo.findById(categoryId).orElseThrow(()->new RuntimeException("category not found"));
+        Category category=categoryRepo.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("category not found"));
         categoryRepo.delete(category);
     }
 }
