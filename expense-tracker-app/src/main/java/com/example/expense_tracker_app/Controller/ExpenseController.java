@@ -3,6 +3,7 @@ package com.example.expense_tracker_app.Controller;
 import com.example.expense_tracker_app.DTO.ExpenseDTO;
 import com.example.expense_tracker_app.Service.ExpenseService;
 import com.example.expense_tracker_app.Service.ExpenseServiceIMPL;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(
+        name="CRUD REST APIS FOR EXPENSE RESOURCE",
+        description = "CRUD for Expense Resource- CREATE, UPDATE, GET, DELETE"
+)
 @RestController
 @RequestMapping("/api/expense")
 public class ExpenseController
